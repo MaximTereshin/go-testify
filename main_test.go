@@ -10,7 +10,7 @@ import (
 
 const (
 	totalCount int    = 4
-	expected   string = "wrong city value"
+	expected   string = "wrong city"
 )
 
 func TestMainHandlerWhenRequestIsCorrect(t *testing.T) {
@@ -34,6 +34,7 @@ func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) {
 	handler.ServeHTTP(responseRecorder, req)
 
 	assert.Len(t, strings.Split(responseRecorder.Body.String(), ","), totalCount)
+	assert.Equal(t, http.StatusOK, responseRecorder.Code)
 }
 
 func TestMainHandlerWhenCityIsWrong(t *testing.T) {
@@ -45,5 +46,5 @@ func TestMainHandlerWhenCityIsWrong(t *testing.T) {
 	handler.ServeHTTP(responseRecorder, req)
 
 	assert.Equal(t, http.StatusBadRequest, responseRecorder.Code)
-	assert.Equal(t, responseRecorder.Body.String(), expected)
+	assert.Equal(t, expected, responseRecorder.Body.String())
 }
